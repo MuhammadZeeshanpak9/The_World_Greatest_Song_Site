@@ -101,7 +101,7 @@ export default function Hero() {
                 textTransform: 'uppercase'
             }}
         >
-            Sonic Wellness Revolution
+            THE WORLD'S GREATEST MUSIC WORLDWIDE™
         </motion.div>
 
         <motion.h1 
@@ -110,21 +110,20 @@ export default function Hero() {
               visible: { y: 0, opacity: 1, filter: 'blur(0px)', scale: 1, transition: { duration: 1, delay: 0.2 } }
           }}
           style={{ 
-            fontSize: isMobile ? '2.5rem' : 'clamp(3rem, 7vw, 6rem)', 
+            fontSize: isMobile ? '2rem' : 'clamp(2.5rem, 5vw, 4.5rem)', 
             marginBottom: '1.5rem', 
             fontWeight: 900, 
             lineHeight: 1.1, 
             letterSpacing: '-0.03em' 
           }}
         >
-          LIMITLESS <br />
+          THE NUMBER 1 MENTAL WELLNESS <br />
           <span style={{ 
             color: 'transparent', 
             WebkitTextStroke: isMobile ? '1px var(--primary-accent)' : '2px var(--primary-accent)',
             textShadow: '0 0 40px rgba(159, 129, 185, 0.2)'
-           }}>CREATION</span> <br />
-          {!isMobile && 'IN EVERY WAVE'}
-          {isMobile && 'EVERY WAVE'}
+           }}>MUSIC CREATORS</span> <br />
+          IN THE UNIVERSE
         </motion.h1>
         
         <motion.p 
@@ -142,7 +141,7 @@ export default function Hero() {
             marginRight: isMobile ? 'auto' : '0'
           }}
         >
-          We are the world’s leading mental wellness music architects. Immerse yourself in a universe where sound meets the soul.
+          It only gets greater.
         </motion.p>
         
         <motion.div 

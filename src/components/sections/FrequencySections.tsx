@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Play } from 'lucide-react';
+import { useWindowSize } from '@/hooks/useWindowSize';
 
 interface Video {
   id: number;
@@ -24,6 +25,7 @@ function getYoutubeThumbnail(url: string) {
 }
 
 function FrequencyCard({ video, glowColor, index }: { video: Video, glowColor: string, index: number }) {
+  const { isMobile } = useWindowSize();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 100, damping: 20 });
@@ -62,7 +64,7 @@ function FrequencyCard({ video, glowColor, index }: { video: Video, glowColor: s
         style={{ 
           overflow: 'hidden', 
           cursor: 'pointer',
-          borderRadius: '20px',
+          borderRadius: isMobile ? '12px' : '20px',
           background: 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(10px)',
           border: `1px solid ${glowColor}33`,
@@ -89,16 +91,16 @@ function FrequencyCard({ video, glowColor, index }: { video: Video, glowColor: s
               transform: 'translate(-50%, -50%)',
               background: `${glowColor}44`,
               borderRadius: '50%',
-              padding: '1rem',
+              padding: isMobile ? '0.6rem' : '1rem',
               backdropFilter: 'blur(5px)',
               border: `1px solid ${glowColor}aa`,
               boxShadow: `0 0 30px ${glowColor}44`
             }}>
-            <Play fill="white" color="white" size={24} />
+            <Play fill="white" color="white" size={isMobile ? 18 : 24} />
           </motion.div>
         </div>
-        <div style={{ padding: '1.5rem', textAlign: 'center' }}>
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-main)' }}>{video.title}</h3>
+        <div style={{ padding: isMobile ? '1rem' : '1.5rem', textAlign: 'center' }}>
+          <h3 style={{ fontSize: isMobile ? '0.85rem' : '1.2rem', fontWeight: 600, color: 'var(--text-main)' }}>{video.title}</h3>
         </div>
       </motion.div>
     </motion.a>
@@ -106,8 +108,9 @@ function FrequencyCard({ video, glowColor, index }: { video: Video, glowColor: s
 }
 
 function FrequencyGrid({ title, glowColor, id, index, videos }: FrequencySectionProps) {
+  const { isMobile } = useWindowSize();
   return (
-    <section id={id} style={{ padding: '8rem 2rem' }}>
+    <section id={id} style={{ padding: isMobile ? '4rem 1rem' : '8rem 2rem' }}>
       <motion.div
         initial={{ opacity: 0, y: 20, filter: 'blur(10px)' }}
         whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -132,8 +135,8 @@ function FrequencyGrid({ title, glowColor, id, index, videos }: FrequencySection
       
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        gap: '2rem',
+        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: isMobile ? '0.8rem' : '2rem',
         width: '100%',
         maxWidth: '1200px',
         margin: '0 auto'

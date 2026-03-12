@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Play } from 'lucide-react';
+import { useWindowSize } from '@/hooks/useWindowSize';
 
 const videos = [
   { id: 1, title: 'Binaural Frequencies', url: 'https://www.youtube.com/watch?v=Popd1R9XH2Y' },
@@ -17,6 +18,7 @@ function getYoutubeThumbnail(url: string) {
 }
 
 function MagneticCard({ video, index }: { video: typeof videos[0], index: number }) {
+  const { isMobile } = useWindowSize();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
@@ -66,7 +68,7 @@ function MagneticCard({ video, index }: { video: typeof videos[0], index: number
         style={{ 
             overflow: 'hidden', 
             cursor: 'pointer',
-            borderRadius: '24px',
+            borderRadius: isMobile ? '16px' : '24px',
             background: 'rgba(255, 255, 255, 0.03)',
             backdropFilter: 'blur(12px)',
             border: '1px solid rgba(159, 129, 185, 0.15)',
@@ -94,20 +96,20 @@ function MagneticCard({ video, index }: { video: typeof videos[0], index: number
                     background: 'rgba(255, 255, 255, 0.15)',
                     backdropFilter: 'blur(10px)',
                     borderRadius: '50%',
-                    padding: '1.2rem',
+                    padding: isMobile ? '0.8rem' : '1.2rem',
                     border: '1px solid rgba(255,255,255,0.4)',
                     boxShadow: '0 0 30px rgba(159, 129, 185, 0.3)'
                }}
             >
-                <Play fill="white" color="white" size={32} />
+                <Play fill="white" color="white" size={isMobile ? 20 : 32} />
             </motion.div>
           </div>
         </div>
-        <div style={{ padding: '2rem' }}>
-          <h3 style={{ fontSize: '1.4rem', color: 'var(--text-main)', fontWeight: 700, letterSpacing: '-0.01em' }}>{video.title}</h3>
+        <div style={{ padding: isMobile ? '1rem' : '2rem' }}>
+          <h3 style={{ fontSize: isMobile ? '1rem' : '1.4rem', color: 'var(--text-main)', fontWeight: 700, letterSpacing: '-0.01em' }}>{video.title}</h3>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '0.8rem', opacity: 0.5 }}>
             <span style={{ width: '30px', height: '1px', background: 'var(--primary-accent)' }} />
-            <p style={{ fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-main)' }}>Sonic Architecture</p>
+            <p style={{ fontSize: isMobile ? '0.65rem' : '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-main)' }}>Sonic Architecture</p>
           </div>
         </div>
       </motion.div>
@@ -116,8 +118,9 @@ function MagneticCard({ video, index }: { video: typeof videos[0], index: number
 }
 
 export default function TrendingVideos() {
+  const { isMobile } = useWindowSize();
   return (
-    <section id="trending" style={{ padding: '10rem 2rem' }}>
+    <section id="trending" style={{ padding: isMobile ? '5rem 1rem' : '10rem 2rem' }}>
       <motion.div
         initial={{ opacity: 0, x: -30, filter: 'blur(10px)' }}
         whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
@@ -128,15 +131,16 @@ export default function TrendingVideos() {
         <h2 style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', fontWeight: 800, letterSpacing: '-0.03em' }}>
             DAILY <span style={{ color: 'var(--primary-accent)' }}>EVOLUTIONS</span>
         </h2>
-        <p style={{ opacity: 0.5, marginTop: '0.5rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Most Transcendent Works</p>
+        <p style={{ opacity: 0.5, marginTop: '0.5rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Most Transcendent Creation</p>
       </motion.div>
       
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        gap: '2.5rem',
+        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(280px, 1fr))',
+        gap: isMobile ? '1rem' : '2.5rem',
         width: '100%',
-        maxWidth: '1300px'
+        maxWidth: '1300px',
+        margin: '0 auto'
       }}>
         {videos.map((video, index) => (
           <MagneticCard key={video.id} video={video} index={index} />
