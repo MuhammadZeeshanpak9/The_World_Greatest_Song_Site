@@ -52,7 +52,7 @@ export default function Header() {
           whileHover={{ scale: 1.05 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          UNIV<span style={{ color: 'var(--primary-accent)' }}>ERSE</span>
+          GREAT<span style={{ color: 'var(--primary-accent)' }}>EST</span>
         </motion.div>
 
         {!isMobile && (

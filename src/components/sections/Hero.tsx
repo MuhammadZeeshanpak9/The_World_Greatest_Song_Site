@@ -37,7 +37,7 @@ export default function Hero() {
       x: [0, Math.sin(i) * 10, 0],
       opacity: [0.2, 0.5, 0.2],
       transition: {
-        duration: 4 + Math.random() * 4,
+        duration: 4 + Math.abs(Math.cos(i)) * 4,
         repeat: Infinity,
         ease: "easeInOut" as any
       }
@@ -71,8 +71,8 @@ export default function Hero() {
               height: i % 3 === 0 ? '4px' : '2px',
               background: 'var(--primary-accent)',
               borderRadius: '50%',
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              left: `${Math.abs(Math.sin(i * 1234.56)) * 100}%`,
+              top: `${Math.abs(Math.cos(i * 5678.91)) * 100}%`,
               filter: 'blur(1px)',
               boxShadow: '0 0 10px var(--primary-accent)'
             }}
@@ -123,7 +123,7 @@ export default function Hero() {
             WebkitTextStroke: isMobile ? '1px var(--primary-accent)' : '2px var(--primary-accent)',
             textShadow: '0 0 40px rgba(159, 129, 185, 0.2)'
            }}>MUSIC CREATORS</span> <br />
-          IN THE UNIVERSE
+          IN THE GREATEST
         </motion.h1>
         
         <motion.p 

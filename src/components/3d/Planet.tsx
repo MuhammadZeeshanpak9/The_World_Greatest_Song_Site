@@ -2,7 +2,7 @@
 
 import { useRef, useLayoutEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Sphere, MeshDistortMaterial, Float, Ring } from '@react-three/drei';
+import { Sphere, Float, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,6 +10,64 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 import { useWindowSize } from '@/hooks/useWindowSize';
+
+// Custom component to draw wavy circular lines
+function MusicWaveRing({
+  radius = 3,
+  amplitude = 0.5,
+  frequency = 6,
+  points = 120,
+  color = '#4facfe',
+  opacity = 0.5,
+  rotationOffset = 0
+}) {
+  const lineRef = useRef<THREE.LineLoop>(null!);
+
+  useLayoutEffect(() => {
+    if (lineRef.current) {
+      const geometry = lineRef.current.geometry;
+      const positions = new Float32Array(points * 3);
+
+      for (let i = 0; i < points; i++) {
+        const theta = (i / points) * Math.PI * 2;
+        // Base circle + sine wave distortion based on frequency
+        const r = radius + Math.sin(theta * frequency + rotationOffset) * amplitude;
+        
+        positions[i * 3] = Math.cos(theta) * r;
+        positions[i * 3 + 1] = Math.sin(theta) * r;
+        positions[i * 3 + 2] = 0;
+      }
+      
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.computeBoundingSphere();
+    }
+  }, [radius, amplitude, frequency, points, rotationOffset]);
+
+  return (
+    <lineLoop ref={lineRef}>
+      <bufferGeometry />
+      <lineBasicMaterial color={color} transparent opacity={opacity} depthWrite={false} />
+    </lineLoop>
+  );
+}
+
+function InnerGlobe() {
+  // Using a realistic daylight earth map as requested via reference
+  const texture = useTexture('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
+  
+  return (
+    <>
+      <sphereGeometry args={[2, 64, 64]} />
+      <meshStandardMaterial
+        map={texture}
+        roughness={0.2}
+        metalness={0.2}
+        emissive="#ffffff"
+        emissiveIntensity={0.25}
+      />
+    </>
+  );
+}
 
 export default function Planet() {
   const meshRef = useRef<THREE.Mesh>(null!);
@@ -23,13 +81,11 @@ export default function Planet() {
       meshRef.current.rotation.y += 0.003;
     }
     if (ringsRef.current) {
-      // Orbital rotation
-      ringsRef.current.rotation.z += 0.001;
-      // X/Y orbital "wobble"
-      ringsRef.current.position.x = Math.sin(t * 0.5) * 0.1;
-      ringsRef.current.position.y = Math.cos(t * 0.5) * 0.1;
-      // Slight tilt oscillation
-      ringsRef.current.rotation.x = (Math.PI / 2) + Math.sin(t * 0.3) * 0.05;
+      // Orbital rotation - spin the whole wave group smoothly
+      ringsRef.current.rotation.z += 0.002;
+      // Slight X/Y tilt and breath
+      ringsRef.current.rotation.x = (Math.PI / 2.2) + Math.sin(t * 0.2) * 0.05;
+      ringsRef.current.rotation.y = Math.cos(t * 0.3) * 0.05;
     }
   });
 
@@ -101,18 +157,7 @@ export default function Planet() {
       <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
         <group rotation={[Math.PI / 6, 0, Math.PI / 12]}>
           <mesh ref={meshRef}>
-            <sphereGeometry args={[2, 64, 64]} />
-            <MeshDistortMaterial
-              color="#9f81b9"
-              speed={2}
-              distort={0.15}
-              roughness={0.2}
-              metalness={0.7}
-              emissive="#9f81b9"
-              emissiveIntensity={0.3}
-              transparent
-              opacity={1}
-            />
+            <InnerGlobe />
             {/* Inner Core Glow */}
             <Sphere args={[1.9, 64, 64]}>
               <meshBasicMaterial
@@ -124,42 +169,27 @@ export default function Planet() {
             {/* Halo */}
             <Sphere args={[2.4, 64, 64]}>
               <meshBasicMaterial
-                color="#c8b7dc"
+                color="#4facfe"
                 transparent
-                opacity={0.03}
+                opacity={0.06}
                 side={THREE.BackSide}
               />
             </Sphere>
           </mesh>
 
-          {/* Saturn-like Rings */}
+          {/* Dynamic Music Wave Rings */}
           <group ref={ringsRef} rotation={[Math.PI / 2, 0, 0]}>
-            <Ring args={[2.8, 3.8, 64]}>
-              <meshStandardMaterial
+            {[...Array(24)].map((_, i) => (
+              <MusicWaveRing
+                key={i}
+                radius={3.0 + i * 0.12}
+                amplitude={0.6 + (i * 0.08)}
+                frequency={5 + (i % 3 === 0 ? 0 : 1)}
+                opacity={0.8 - (i * 0.02)}
+                rotationOffset={(i * Math.PI) / 12}
                 color="#9f81b9"
-                transparent
-                opacity={0.4}
-                side={THREE.DoubleSide}
-                metalness={0.8}
-                roughness={0.2}
               />
-            </Ring>
-            <Ring args={[4.0, 4.2, 64]}>
-              <meshStandardMaterial
-                color="#c8b7dc"
-                transparent
-                opacity={0.2}
-                side={THREE.DoubleSide}
-              />
-            </Ring>
-            <Ring args={[4.4, 4.5, 64]}>
-              <meshStandardMaterial
-                color="#9f81b9"
-                transparent
-                opacity={0.1}
-                side={THREE.DoubleSide}
-              />
-            </Ring>
+            ))}
           </group>
         </group>
       </Float>
