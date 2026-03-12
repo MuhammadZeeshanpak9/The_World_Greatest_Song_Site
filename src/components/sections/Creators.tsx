@@ -4,27 +4,50 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Youtube, Instagram, Twitter } from 'lucide-react';
 import { useWindowSize } from '@/hooks/useWindowSize';
 
+// Real assets
+import gratitudeImg from '@/assets/images/Artists_creator/GRATITUDEBOSSLADY.png';
+import jayImg from '@/assets/images/Artists_creator/JAY2DAWORLD.jpg';
+import joeImg from '@/assets/images/Artists_creator/JOE BILLS.jpg';
+import oluwaf3miImg from '@/assets/images/Artists_creator/OLUWAF3MI.jpg';
+import renaImg from '@/assets/images/Artists_creator/RENA CHAMP.jpg';
+
 const creators = [
   { 
     id: 1, 
-    name: 'Aria Vance', 
+    name: 'GRATITUDE BOSSLADY', 
     role: 'Frequency Specialist', 
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600',
-    bio: 'Dedicated to exploring the intersection of quantum physics and sonic meditation.'
+    image: gratitudeImg.src,
+    bio: 'Dedicated to exploring the intersection of quantum physics and sonic meditation.',
+    position: 'top'
   },
   { 
     id: 2, 
-    name: 'Julian Thorne', 
+    name: 'JAY2DAWORLD', 
     role: 'Sonic Architect', 
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600',
-    bio: 'Pioneer in spatial audio and immersive mental wellness soundscapes.'
+    image: jayImg.src,
+    bio: 'Pioneer in spatial audio and immersive mental wellness soundscapes.',
+    position: 'top'
   },
   { 
     id: 3, 
-    name: 'Luna Ray', 
+    name: 'JOE BILLS', 
     role: 'Vocal Healer', 
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=600',
+    image: joeImg.src,
     bio: 'Using the human voice as a tool for grounding and vibrational realignment.'
+  },
+  { 
+    id: 4, 
+    name: 'OLUWAF3MI', 
+    role: 'Rhythm Architect', 
+    image: oluwaf3miImg.src,
+    bio: 'Master of polyrhythmic frequencies and cultural sonic fusion.'
+  },
+  { 
+    id: 5, 
+    name: 'RENA CHAMP', 
+    role: 'Sonic Visionary', 
+    image: renaImg.src,
+    bio: 'Envisioning the future of sound through experimental frequency manipulation.'
   },
 ];
 
@@ -79,11 +102,11 @@ function CreatorCard({ creator, index }: { creator: typeof creators[0], index: n
                 <img 
                   src={creator.image} 
                   alt={creator.name} 
-                  style={{ width: '100%', height: '75%', objectFit: 'cover' }}
+                  style={{ width: '100%', height: '75%', objectFit: 'cover', objectPosition: (creator as any).position || 'center' }}
                 />
                 <div style={{ padding: '1.5rem', textAlign: 'center' }}>
-                  <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-main)' }}>{creator.name}</h3>
-                  <p style={{ opacity: 0.5, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.4rem' }}>{creator.role}</p>
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>{creator.name}</h3>
+                  <p style={{ opacity: 0.5, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.4rem' }}>{creator.role}</p>
                 </div>
               </div>
 
@@ -98,17 +121,17 @@ function CreatorCard({ creator, index }: { creator: typeof creators[0], index: n
                 backdropFilter: 'blur(25px)',
                 border: '1px solid var(--primary-accent)',
                 transform: 'rotateY(180deg)',
-                padding: '3rem',
+                padding: '2rem',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
                 textAlign: 'center'
               }}>
-                <h3 style={{ fontSize: '1.6rem', marginBottom: '1.5rem', color: 'var(--primary-accent)', fontWeight: 900 }}>{creator.name}</h3>
-                <p style={{ marginBottom: '3rem', fontSize: '1.1rem', lineHeight: '1.6', opacity: 0.7, fontWeight: 500 }}>{creator.bio}</p>
+                <h3 style={{ fontSize: '1.4rem', marginBottom: '1rem', color: 'var(--primary-accent)', fontWeight: 900 }}>{creator.name}</h3>
+                <p style={{ marginBottom: '2rem', fontSize: '1rem', lineHeight: '1.5', opacity: 0.7, fontWeight: 500 }}>{creator.bio}</p>
                 
-                <div style={{ display: 'flex', gap: '2rem' }}>
+                <div style={{ display: 'flex', gap: '1.5rem' }}>
                   <motion.div whileHover={{ scale: 1.2, color: 'var(--primary-accent)' }}>
                     <Youtube style={{ cursor: 'pointer', opacity: 0.8 }} />
                   </motion.div>
@@ -137,17 +160,17 @@ export default function Creators() {
         style={{ marginBottom: isMobile ? '3rem' : '6rem', textAlign: isMobile ? 'center' : 'right' }}
       >
         <h2 style={{ fontSize: isMobile ? '2.5rem' : '3.5rem', fontWeight: 900, letterSpacing: '-0.04em' }}>
-            MEET THE <span style={{ color: 'var(--primary-accent)' }}>ARCHITECTS</span>
+            MEET THE <span style={{ color: 'var(--primary-accent)' }}>CREATORS/ARTISTS</span>
         </h2>
         <p style={{ opacity: 0.5, marginTop: '1rem', letterSpacing: isMobile ? '0.15em' : '0.3em', textTransform: 'uppercase', fontSize: isMobile ? '0.7rem' : '0.9rem' }}>The Visionaries Behind the Sound</p>
       </motion.div>
       
       <div style={{
         display: 'grid',
-        gridTemplateColumns: `repeat(auto-fit, minmax(${isMobile ? '280px' : '350px'}, 1fr))`,
-        gap: isMobile ? '2rem' : '4rem',
+        gridTemplateColumns: `repeat(auto-fit, minmax(${isMobile ? '280px' : '320px'}, 1fr))`,
+        gap: isMobile ? '2rem' : '3rem',
         width: '100%',
-        maxWidth: '1300px',
+        maxWidth: '1400px',
         margin: '0 auto'
       }}>
         {creators.map((creator, index) => (
@@ -157,3 +180,4 @@ export default function Creators() {
     </section>
   );
 }
+

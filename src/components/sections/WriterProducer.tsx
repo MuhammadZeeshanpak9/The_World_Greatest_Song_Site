@@ -5,18 +5,24 @@ import { useRef } from 'react';
 
 import { useWindowSize } from '@/hooks/useWindowSize';
 
+// Real assets
+import writerImg from '@/assets/images/writer/1000070440.jpg';
+import producerImg from '@/assets/images/producer/1000072477.jpg';
+
 const profiles = [
   { 
-    role: 'The Writer', 
-    name: 'Aria Penhaligon', 
+    role: 'Written By', 
+    name: 'LUCAH TWG', 
     desc: 'Crafting lyrical journeys that speak to the subconscious mind.',
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=1200'
+    image: writerImg.src,
+    position: 'top'
   },
   { 
-    role: 'The Producer', 
-    name: 'Kaelen Thorne', 
+    role: 'Produced By', 
+    name: 'TGD', 
     desc: 'Mastering the frequencies that heal and elevate the human spirit.',
-    image: 'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?auto=format&fit=crop&q=80&w=1200'
+    image: producerImg.src,
+    position: 'center'
   },
 ];
 
@@ -33,19 +39,17 @@ export default function WriterProducer() {
 
   return (
     <section id="writer-producer" ref={containerRef} style={{ padding: 0, overflow: 'hidden' }}>
-      <div style={{ display: 'flex', width: '100%', minHeight: isMobile ? 'auto' : '120vh', flexDirection: isMobile ? 'column' : 'row' }}>
+      <div style={{ display: 'flex', width: '100%', minHeight: isMobile ? 'auto' : '80vh', flexDirection: isMobile ? 'column' : 'row' }}>
         {profiles.map((profile, index) => (
           <motion.div
             key={profile.role}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 1.5 }}
-            viewport={{ once: true }}
+            initial="initial"
+            whileHover="hover"
             style={{
               flex: '1 1 50%',
               position: 'relative',
               overflow: 'hidden',
-              minHeight: isMobile ? '60vh' : '100vh',
+              minHeight: isMobile ? '50vh' : '80vh',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -54,9 +58,17 @@ export default function WriterProducer() {
           >
             {/* Background Parallax Layer */}
             <motion.div
+              variants={{
+                initial: { filter: 'brightness(0.3) contrast(1.2) saturate(0.8)' },
+                hover: { filter: 'brightness(1) contrast(1.1) saturate(1)' }
+              }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               style={{
                 position: 'absolute',
-                inset: '-10%',
+                top: (isMobile || isTablet) ? 0 : (index === 0 ? 0 : '-20%'),
+                bottom: (isMobile || isTablet) ? 0 : (index === 0 ? '-20%' : 0),
+                left: (isMobile || isTablet) ? 0 : '-10%',
+                right: (isMobile || isTablet) ? 0 : '-10%',
                 zIndex: -1,
                 y: (isMobile || isTablet) ? 0 : (index === 0 ? y1 : y2)
               }}
@@ -64,23 +76,36 @@ export default function WriterProducer() {
               <img 
                 src={profile.image} 
                 alt={profile.name} 
-                style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.3) contrast(1.2) saturate(0.8)' }}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover',
+                  objectPosition: profile.position || 'center'
+                }}
               />
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: index === 0 
-                  ? 'linear-gradient(to right, rgba(0,0,0,0.8), transparent)' 
-                  : 'linear-gradient(to left, rgba(0,0,0,0.8), transparent)'
-              }} />
+              <motion.div 
+                variants={{
+                    initial: { opacity: 1 },
+                    hover: { opacity: 0 }
+                }}
+                transition={{ duration: 0.8 }}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: index === 0 
+                    ? 'linear-gradient(to right, rgba(0,0,0,0.8), transparent)' 
+                    : 'linear-gradient(to left, rgba(0,0,0,0.8), transparent)'
+                }} 
+              />
             </motion.div>
 
             {/* Cinematic Content */}
             <motion.div 
-               initial={{ y: 50, opacity: 0 }}
-               whileInView={{ y: 0, opacity: 1 }}
-               transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] as any }}
-               whileHover={{ scale: 1.05 }}
+               variants={{
+                 initial: { y: 0, opacity: 1 },
+                 hover: { y: 20, opacity: 0 }
+               }}
+               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                style={{ textAlign: 'center', padding: '4rem', zIndex: 2, perspective: '1000px' }}
             >
               <motion.span
@@ -128,3 +153,4 @@ export default function WriterProducer() {
     </section>
   );
 }
+

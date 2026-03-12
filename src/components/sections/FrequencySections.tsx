@@ -3,20 +3,27 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Play } from 'lucide-react';
 
+interface Video {
+  id: number;
+  title: string;
+  url: string;
+}
+
 interface FrequencySectionProps {
   id: string;
   title: string;
   glowColor: string;
   index: number;
+  videos: Video[];
 }
 
-const videos = [
-  { id: 1, title: 'Quantum Harmony', thumbnail: 'https://images.unsplash.com/photo-1499346030926-03f47e9c339a?auto=format&fit=crop&q=80&w=600' },
-  { id: 2, title: 'Vibrational Reset', thumbnail: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&q=80&w=600' },
-  { id: 3, title: 'Aetheric Echoes', thumbnail: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&q=80&w=600' },
-];
+function getYoutubeThumbnail(url: string) {
+  const videoIdMatch = url.match(/[?&]v=([^&]+)/);
+  const videoId = videoIdMatch ? videoIdMatch[1] : null;
+  return videoId ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg` : '';
+}
 
-function FrequencyCard({ video, glowColor, index }: { video: typeof videos[0], glowColor: string, index: number }) {
+function FrequencyCard({ video, glowColor, index }: { video: Video, glowColor: string, index: number }) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const springX = useSpring(x, { stiffness: 100, damping: 20 });
@@ -25,7 +32,10 @@ function FrequencyCard({ video, glowColor, index }: { video: typeof videos[0], g
   const rotateY = useTransform(springX, [-100, 100], [-8, 8]);
 
   return (
-    <motion.div
+    <motion.a
+      href={video.url}
+      target="_blank"
+      rel="noopener noreferrer"
       initial={{ opacity: 0, scale: 0.8, filter: 'blur(15px)' }}
       whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
       transition={{ delay: index * 0.1, duration: 1 }}
@@ -36,7 +46,15 @@ function FrequencyCard({ video, glowColor, index }: { video: typeof videos[0], g
         y.set(e.clientY - (rect.top + rect.height / 2));
       }}
       onMouseLeave={() => { x.set(0); y.set(0); }}
-      style={{ rotateX, rotateY, x: springX, y: springY, perspective: '1000px' }}
+      style={{ 
+        rotateX, 
+        rotateY, 
+        x: springX, 
+        y: springY, 
+        perspective: '1000px',
+        display: 'block',
+        textDecoration: 'none'
+      }}
     >
       <motion.div
         className="glass-card"
@@ -53,7 +71,7 @@ function FrequencyCard({ video, glowColor, index }: { video: typeof videos[0], g
       >
         <div style={{ position: 'relative', width: '100%', aspectRatio: '16/9' }}>
           <img 
-            src={video.thumbnail} 
+            src={getYoutubeThumbnail(video.url)} 
             alt={video.title} 
             style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
           />
@@ -83,11 +101,11 @@ function FrequencyCard({ video, glowColor, index }: { video: typeof videos[0], g
           <h3 style={{ fontSize: '1.2rem', fontWeight: 600, color: 'var(--text-main)' }}>{video.title}</h3>
         </div>
       </motion.div>
-    </motion.div>
+    </motion.a>
   );
 }
 
-function FrequencyGrid({ title, glowColor, id, index }: FrequencySectionProps) {
+function FrequencyGrid({ title, glowColor, id, index, videos }: FrequencySectionProps) {
   return (
     <section id={id} style={{ padding: '8rem 2rem' }}>
       <motion.div
@@ -129,11 +147,37 @@ function FrequencyGrid({ title, glowColor, id, index }: FrequencySectionProps) {
 }
 
 export default function FrequencySections() {
+  const videos432Hz = [
+    { id: 1, title: 'Vibrational Healing', url: 'https://www.youtube.com/watch?v=NP1EnZl7pyM' },
+    { id: 2, title: 'Sonic Ascension', url: 'https://www.youtube.com/watch?v=qWscN20B-iE' },
+    { id: 3, title: 'Miracle Tone', url: 'https://www.youtube.com/watch?v=waR8lR_jk2I' },
+    { id: 4, title: 'DNA Repair', url: 'https://www.youtube.com/watch?v=Ej_ficO7kbU' },
+    { id: 5, title: 'Aura Cleansing', url: 'https://www.youtube.com/watch?v=rmJxdEumJs4' },
+    { id: 6, title: 'Deep Sleep', url: 'https://www.youtube.com/watch?v=mkiDgn17tOc' },
+  ];
+
+  const videos528Hz = [
+    { id: 1, title: 'Love Frequency', url: 'https://www.youtube.com/watch?v=rTF-lOd57DA' },
+    { id: 2, title: 'Positive Transformation', url: 'https://www.youtube.com/watch?v=U5sOeOfcOWo' },
+    { id: 3, title: 'Heart Chakra Healing', url: 'https://www.youtube.com/watch?v=8mfGoRaLmmw' },
+    { id: 4, title: 'Inner Peace', url: 'https://www.youtube.com/watch?v=MpEvYhfffqw' },
+    { id: 5, title: 'Spiritual Awakening', url: 'https://www.youtube.com/watch?v=sxtfUMaIP1g' },
+  ];
+
+  const videos639Hz = [
+    { id: 1, title: 'Harmonious Relationships', url: 'https://www.youtube.com/watch?v=kJqe2yV3SIA' },
+    { id: 2, title: 'Attracting Love', url: 'https://www.youtube.com/watch?v=1G7rzmHYaPY' },
+    { id: 3, title: 'Emotional Balance', url: 'https://www.youtube.com/watch?v=K0D7Eq1hRNk' },
+    { id: 4, title: 'Cellular Healing', url: 'https://www.youtube.com/watch?v=ZZwzuyCsmis' },
+    { id: 5, title: 'Positive Energy', url: 'https://www.youtube.com/watch?v=H96Y9_-Q1n4' },
+  ];
+
   return (
     <>
-      <FrequencyGrid id="frequency-3" title="FREQUENCY 432Hz" glowColor="#9f81b9" index={0} />
-      <FrequencyGrid id="frequency-2" title="FREQUENCY 528Hz" glowColor="#4facfe" index={1} />
-      <FrequencyGrid id="frequency-1" title="FREQUENCY 639Hz" glowColor="#f6d365" index={2} />
+      <FrequencyGrid id="frequency-3" title="FREQUENCY 432Hz" glowColor="#9f81b9" index={0} videos={videos432Hz} />
+      <FrequencyGrid id="frequency-2" title="FREQUENCY 528Hz" glowColor="#4facfe" index={1} videos={videos528Hz} />
+      <FrequencyGrid id="frequency-1" title="FREQUENCY 639Hz" glowColor="#f6d365" index={2} videos={videos639Hz} />
     </>
   );
 }
+
