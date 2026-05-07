@@ -1,11 +1,19 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Youtube, Instagram, Music2, ArrowUp } from 'lucide-react';
 import { useWindowSize } from '@/hooks/useWindowSize';
 
 export default function Footer() {
+  const [mounted, setMounted] = useState(false);
   const { isMobile } = useWindowSize();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
   const icons = [
     { component: Youtube, color: '#FF0000', label: 'YouTube' },
     { component: Instagram, color: '#E4405F', label: 'Instagram' },

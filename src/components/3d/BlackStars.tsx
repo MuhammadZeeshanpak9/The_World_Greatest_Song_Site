@@ -1,13 +1,20 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useScroll } from 'framer-motion';
 
 export default function BlackStars() {
+  const [mounted, setMounted] = useState(false);
   const pointsRef = useRef<THREE.Points>(null!);
   const { scrollYProgress } = useScroll();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
   
   const count = 4000;
   const positions = useMemo(() => {

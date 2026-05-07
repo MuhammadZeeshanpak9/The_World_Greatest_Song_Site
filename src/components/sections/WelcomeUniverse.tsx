@@ -3,7 +3,7 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Sphere, MeshDistortMaterial, Float, Stars } from '@react-three/drei';
 import { motion } from 'framer-motion';
-import { useRef, Suspense, useMemo } from 'react';
+import { useRef, Suspense, useMemo, useState, useEffect } from 'react';
 import * as THREE from 'three';
 
 import { useWindowSize } from '@/hooks/useWindowSize';
@@ -67,8 +67,15 @@ function SceneEffects() {
 }
 
 export default function WelcomeUniverse() {
+  const [mounted, setMounted] = useState(false);
   const words = "WELCOME TO OUR UNIVERSE".split(" ");
   const { isMobile } = useWindowSize();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   const container = {
     hidden: { opacity: 0 },

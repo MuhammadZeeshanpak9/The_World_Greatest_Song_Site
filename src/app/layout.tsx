@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "The world Greatest music Site",
+  title: "UNIVERSE MENTAL WELLNESS MUSIC",
   description: "Experience the universe of mental wellness music and frequency architecture.",
 };
 

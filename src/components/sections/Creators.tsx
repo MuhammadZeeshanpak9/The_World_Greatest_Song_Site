@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Youtube, Instagram, Twitter } from 'lucide-react';
 import { useWindowSize } from '@/hooks/useWindowSize';
@@ -149,7 +150,14 @@ function CreatorCard({ creator, index }: { creator: typeof creators[0], index: n
 }
 
 export default function Creators() {
+  const [mounted, setMounted] = useState(false);
   const { isMobile } = useWindowSize();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <section id="creators" style={{ padding: isMobile ? '4rem 1rem' : '10rem 2rem' }}>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Play } from 'lucide-react';
 import { useWindowSize } from '@/hooks/useWindowSize';
@@ -118,7 +119,15 @@ function MagneticCard({ video, index }: { video: typeof videos[0], index: number
 }
 
 export default function TrendingVideos() {
+  const [mounted, setMounted] = useState(false);
   const { isMobile } = useWindowSize();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <section id="trending" style={{ padding: isMobile ? '5rem 1rem' : '10rem 2rem' }}>
       <motion.div

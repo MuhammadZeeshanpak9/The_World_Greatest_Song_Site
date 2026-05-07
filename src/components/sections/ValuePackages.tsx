@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 const services = [
@@ -84,6 +85,14 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
 
 
 export default function ValuePackages() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <section id="value-packages" style={{ padding: '12rem 2rem' }}>
       {/* Header */}

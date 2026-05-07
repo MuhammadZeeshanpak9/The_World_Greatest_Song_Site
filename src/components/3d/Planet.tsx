@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Sphere, Float, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -70,10 +70,17 @@ function InnerGlobe() {
 }
 
 export default function Planet() {
+  const [mounted, setMounted] = useState(false);
   const meshRef = useRef<THREE.Mesh>(null!);
   const groupRef = useRef<THREE.Group>(null!);
   const ringsRef = useRef<THREE.Group>(null!);
   const { isMobile } = useWindowSize();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Play } from 'lucide-react';
 import { useWindowSize } from '@/hooks/useWindowSize';
@@ -150,6 +151,12 @@ function FrequencyGrid({ title, glowColor, id, index, videos }: FrequencySection
 }
 
 export default function FrequencySections() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const videos432Hz = [
     { id: 1, title: 'Vibrational Healing', url: 'https://www.youtube.com/watch?v=NP1EnZl7pyM' },
     { id: 2, title: 'Sonic Ascension', url: 'https://www.youtube.com/watch?v=qWscN20B-iE' },
@@ -174,6 +181,8 @@ export default function FrequencySections() {
     { id: 4, title: 'Cellular Healing', url: 'https://www.youtube.com/watch?v=ZZwzuyCsmis' },
     { id: 5, title: 'Positive Energy', url: 'https://www.youtube.com/watch?v=H96Y9_-Q1n4' },
   ];
+
+  if (!mounted) return null;
 
   return (
     <>

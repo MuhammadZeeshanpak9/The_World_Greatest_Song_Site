@@ -1,7 +1,7 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
 
 import { useWindowSize } from '@/hooks/useWindowSize';
 
@@ -27,8 +27,14 @@ const profiles = [
 ];
 
 export default function WriterProducer() {
+  const [mounted, setMounted] = useState(false);
   const containerRef = useRef(null);
   const { isMobile, isTablet } = useWindowSize();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"]
@@ -36,6 +42,8 @@ export default function WriterProducer() {
 
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
+
+  if (!mounted) return null;
 
   return (
     <section id="writer-producer" ref={containerRef} style={{ padding: 0, overflow: 'hidden' }}>

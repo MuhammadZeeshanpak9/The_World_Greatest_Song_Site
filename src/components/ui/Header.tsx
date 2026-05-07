@@ -6,16 +6,20 @@ import { Menu, X } from 'lucide-react';
 import { useWindowSize } from '@/hooks/useWindowSize';
 
 export default function Header() {
+  const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { isMobile } = useWindowSize();
 
   useEffect(() => {
+    setMounted(true);
     return scrollY.onChange((latest) => {
       setIsScrolled(latest > 50);
     });
   }, [scrollY]);
+
+  if (!mounted) return null; // Or return a placeholder header with default styles
 
   const navItems = [
     { name: 'Home', href: '#hero' },
@@ -52,7 +56,7 @@ export default function Header() {
           whileHover={{ scale: 1.05 }}
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
-          GREAT<span style={{ color: 'var(--primary-accent)' }}>EST</span>
+          UNI<span style={{ color: 'var(--primary-accent)' }}>VERSE</span>
         </motion.div>
 
         {!isMobile && (

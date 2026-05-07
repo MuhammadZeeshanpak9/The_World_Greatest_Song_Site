@@ -1,11 +1,19 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 import { useWindowSize } from '@/hooks/useWindowSize';
 
 export default function Hero() {
+  const [mounted, setMounted] = useState(false);
   const { isMobile } = useWindowSize();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
   
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -123,7 +131,7 @@ export default function Hero() {
             WebkitTextStroke: isMobile ? '1px var(--primary-accent)' : '2px var(--primary-accent)',
             textShadow: '0 0 40px rgba(159, 129, 185, 0.2)'
            }}>MUSIC CREATORS</span> <br />
-          IN THE GREATEST
+          IN THE UNIVERSE
         </motion.h1>
         
         <motion.p 
@@ -141,7 +149,7 @@ export default function Hero() {
             marginRight: isMobile ? 'auto' : '0'
           }}
         >
-          It only gets greater.
+          IT ONLY GETS GREATER.
         </motion.p>
         
         <motion.div 
