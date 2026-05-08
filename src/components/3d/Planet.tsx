@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Sphere, Float, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
@@ -32,12 +32,12 @@ function MusicWaveRing({
         const theta = (i / points) * Math.PI * 2;
         // Base circle + sine wave distortion based on frequency
         const r = radius + Math.sin(theta * frequency + rotationOffset) * amplitude;
-        
+
         positions[i * 3] = Math.cos(theta) * r;
         positions[i * 3 + 1] = Math.sin(theta) * r;
         positions[i * 3 + 2] = 0;
       }
-      
+
       geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       geometry.computeBoundingSphere();
     }
@@ -54,7 +54,7 @@ function MusicWaveRing({
 function InnerGlobe() {
   // Using a realistic daylight earth map as requested via reference
   const texture = useTexture('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
-  
+
   return (
     <>
       <sphereGeometry args={[2, 64, 64]} />
@@ -70,17 +70,10 @@ function InnerGlobe() {
 }
 
 export default function Planet() {
-  const [mounted, setMounted] = useState(false);
   const meshRef = useRef<THREE.Mesh>(null!);
   const groupRef = useRef<THREE.Group>(null!);
   const ringsRef = useRef<THREE.Group>(null!);
   const { isMobile } = useWindowSize();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
 
   useFrame((state) => {
     const t = state.clock.getElapsedTime();
@@ -116,36 +109,36 @@ export default function Planet() {
       tl.to(groupRef.current.position, {
         x: xPos, y: 0.5, z: 0, duration: 0 // Start Hero Right
       })
-      .to(groupRef.current.position, {
-        x: -xPos, y: -0.5, z: -1, ease: "power2.inOut" // Move Left (Trending)
-      })
-      .to(groupRef.current.position, {
-        x: xPos, y: 0, z: 0, ease: "power2.inOut" // Move Right (Frequencies)
-      })
-      .to(groupRef.current.position, {
-        x: -xFar, y: 0.5, z: -2, ease: "sine.inOut" // Move Left (Value Packages)
-      })
-      .to(groupRef.current.position, {
-        x: xFar, y: -0.5, z: 0, ease: "sine.inOut" // Move Right (Welcome/Creators)
-      })
-      .to(groupRef.current.position, {
-        x: 0, y: 0, z: 1, ease: "power3.inOut" // Center (Writer/Producer)
-      })
-      .to(groupRef.current.position, {
-        x: 0, y: -5, z: 0, ease: "power1.in" // Final exit (Footer)
-      });
+        .to(groupRef.current.position, {
+          x: -xPos, y: -0.5, z: -1, ease: "power2.inOut" // Move Left (Trending)
+        })
+        .to(groupRef.current.position, {
+          x: xPos, y: 0, z: 0, ease: "power2.inOut" // Move Right (Frequencies)
+        })
+        .to(groupRef.current.position, {
+          x: -xFar, y: 0.5, z: -2, ease: "sine.inOut" // Move Left (Value Packages)
+        })
+        .to(groupRef.current.position, {
+          x: xFar, y: -0.5, z: 0, ease: "sine.inOut" // Move Right (Welcome/Creators)
+        })
+        .to(groupRef.current.position, {
+          x: 0, y: 0, z: 1, ease: "power3.inOut" // Center (Writer/Producer)
+        })
+        .to(groupRef.current.position, {
+          x: 0, y: -5, z: 0, ease: "power1.in" // Final exit (Footer)
+        });
 
       // Scale refinement (Mobile is even smaller to not cover text)
       const baseScale = isMobile ? 0.35 : 0.5;
       gsap.set(groupRef.current.scale, { x: baseScale, y: baseScale, z: baseScale });
-      
+
       tl.to(groupRef.current.scale, {
         x: baseScale * 0.9, y: baseScale * 0.9, z: baseScale * 0.9,
         ease: "none",
       }, 0);
 
       // Fade out at footer - ensuring it doesn't fade too early
-      gsap.to(groupRef.current.children[0].children[0], { 
+      gsap.to(groupRef.current.children[0].children[0], {
         opacity: 0,
         scrollTrigger: {
           trigger: "footer",

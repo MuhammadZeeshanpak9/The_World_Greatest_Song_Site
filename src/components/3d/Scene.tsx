@@ -2,12 +2,13 @@
 
 import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
+import { Preload, Float } from '@react-three/drei';
 import Planet from './Planet';
 import Galaxy from './Galaxy';
 import SecondaryPlanet from './SecondaryPlanet';
 import BackgroundPlanet from './BackgroundPlanet';
 import BlackStars from './BlackStars';
-import { Preload } from '@react-three/drei';
+import ChakraFigure from './ChakraFigure';
 
 export default function Scene() {
   return (
@@ -34,6 +35,10 @@ export default function Scene() {
           <BackgroundPlanet />
           <SecondaryPlanet />
           <Planet />
+
+          <Float speed={1.5} rotationIntensity={0.1} floatIntensity={0.3}>
+            <ChakraFigure />
+          </Float>
           
           <Preload all />
         </Suspense>

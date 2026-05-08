@@ -1,26 +1,19 @@
 'use client';
 
-import { useRef, useMemo, useState, useEffect } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 export default function Galaxy() {
-  const [mounted, setMounted] = useState(false);
   const pointsRef = useRef<THREE.Points>(null!);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-  
   const count = 5000;
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-        pos[i * 3] = (Math.random() - 0.5) * 30;
-        pos[i * 3 + 1] = (Math.random() - 0.5) * 30;
-        pos[i * 3 + 2] = (Math.random() - 0.5) * 20 - 10;
+      pos[i * 3] = (Math.random() - 0.5) * 30;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 30;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 20 - 10;
     }
     return pos;
   }, []);
@@ -28,7 +21,7 @@ export default function Galaxy() {
   const sizes = useMemo(() => {
     const s = new Float32Array(count);
     for (let i = 0; i < count; i++) {
-        s[i] = Math.random();
+      s[i] = Math.random();
     }
     return s;
   }, []);
@@ -36,7 +29,7 @@ export default function Galaxy() {
   useFrame((state) => {
     if (pointsRef.current) {
       pointsRef.current.rotation.z += 0.0001;
-      
+
       // Twinkling effect via pulse
       const time = state.clock.getElapsedTime();
       const material = pointsRef.current.material as THREE.PointsMaterial;

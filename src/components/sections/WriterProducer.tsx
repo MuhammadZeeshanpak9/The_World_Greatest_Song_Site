@@ -10,16 +10,16 @@ import writerImg from '@/assets/images/writer/1000070440.jpg';
 import producerImg from '@/assets/images/producer/1000072477.jpg';
 
 const profiles = [
-  { 
-    role: 'Written By', 
-    name: 'LUCAH TWG', 
+  {
+    role: 'Written By',
+    name: 'LUCAH TWG',
     desc: 'Crafting lyrical journeys that speak to the subconscious mind.',
     image: writerImg.src,
     position: 'top'
   },
-  { 
-    role: 'Produced By', 
-    name: 'TGD', 
+  {
+    role: 'Produced By',
+    name: 'TGD',
     desc: 'Mastering the frequencies that heal and elevate the human spirit.',
     image: producerImg.src,
     position: 'center'
@@ -28,7 +28,7 @@ const profiles = [
 
 export default function WriterProducer() {
   const [mounted, setMounted] = useState(false);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLElement>(null);
   const { isMobile, isTablet } = useWindowSize();
 
   useEffect(() => {
@@ -43,10 +43,9 @@ export default function WriterProducer() {
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
   const y2 = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
-  if (!mounted) return null;
-
   return (
     <section id="writer-producer" ref={containerRef} style={{ padding: 0, overflow: 'hidden' }}>
+      {mounted && (
       <div style={{ display: 'flex', width: '100%', minHeight: isMobile ? 'auto' : '80vh', flexDirection: isMobile ? 'column' : 'row' }}>
         {profiles.map((profile, index) => (
           <motion.div
@@ -81,58 +80,58 @@ export default function WriterProducer() {
                 y: (isMobile || isTablet) ? 0 : (index === 0 ? y1 : y2)
               }}
             >
-              <img 
-                src={profile.image} 
-                alt={profile.name} 
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
+              <img
+                src={profile.image}
+                alt={profile.name}
+                style={{
+                  width: '100%',
+                  height: '100%',
                   objectFit: 'cover',
                   objectPosition: profile.position || 'center'
                 }}
               />
-              <motion.div 
+              <motion.div
                 variants={{
-                    initial: { opacity: 1 },
-                    hover: { opacity: 0 }
+                  initial: { opacity: 1 },
+                  hover: { opacity: 0 }
                 }}
                 transition={{ duration: 0.8 }}
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  background: index === 0 
-                    ? 'linear-gradient(to right, rgba(0,0,0,0.8), transparent)' 
+                  background: index === 0
+                    ? 'linear-gradient(to right, rgba(0,0,0,0.8), transparent)'
                     : 'linear-gradient(to left, rgba(0,0,0,0.8), transparent)'
-                }} 
+                }}
               />
             </motion.div>
 
             {/* Cinematic Content */}
-            <motion.div 
-               variants={{
-                 initial: { y: 0, opacity: 1 },
-                 hover: { y: 20, opacity: 0 }
-               }}
-               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-               style={{ textAlign: 'center', padding: '4rem', zIndex: 2, perspective: '1000px' }}
+            <motion.div
+              variants={{
+                initial: { y: 0, opacity: 1 },
+                hover: { y: 20, opacity: 0 }
+              }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              style={{ textAlign: 'center', padding: '4rem', zIndex: 2, perspective: '1000px' }}
             >
               <motion.span
-                style={{ 
-                    textTransform: 'uppercase', 
-                    letterSpacing: '8px', 
-                    fontSize: '0.9rem', 
-                    color: 'var(--primary-accent)',
-                    fontWeight: 700,
-                    display: 'block',
-                    marginBottom: '2rem',
-                    textShadow: '0 0 20px rgba(159, 129, 185, 0.4)'
+                style={{
+                  textTransform: 'uppercase',
+                  letterSpacing: '8px',
+                  fontSize: '0.9rem',
+                  color: 'var(--primary-accent)',
+                  fontWeight: 700,
+                  display: 'block',
+                  marginBottom: '2rem',
+                  textShadow: '0 0 20px rgba(159, 129, 185, 0.4)'
                 }}
               >
                 {profile.role}
               </motion.span>
               <h3 style={{ fontSize: 'clamp(3rem, 6vw, 5rem)', margin: '0.5rem 0', color: 'white', fontWeight: 900, lineHeight: 1, letterSpacing: '-0.04em' }}>
                 {profile.name.split(' ').map((n, i) => (
-                    <span key={i} style={{ display: 'block' }}>{n}</span>
+                  <span key={i} style={{ display: 'block' }}>{n}</span>
                 ))}
               </h3>
               <div style={{ width: '40px', height: '2px', background: 'var(--primary-accent)', margin: '2.5rem auto' }} />
@@ -142,22 +141,23 @@ export default function WriterProducer() {
             </motion.div>
 
             {/* Dynamic Light Sweep */}
-            <motion.div 
-                animate={{ x: ['-200%', '200%'] }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'linear-gradient(90deg, transparent, rgba(159, 129, 185, 0.05), transparent)',
-                    pointerEvents: 'none'
-                }}
+            <motion.div
+              animate={{ x: ['-200%', '200%'] }}
+              transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(159, 129, 185, 0.05), transparent)',
+                pointerEvents: 'none'
+              }}
             />
           </motion.div>
         ))}
       </div>
+      )}
     </section>
   );
 }

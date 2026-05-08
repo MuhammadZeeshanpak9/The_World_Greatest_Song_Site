@@ -1,28 +1,21 @@
 'use client';
 
-import { useRef, useMemo, useState, useEffect } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useScroll } from 'framer-motion';
 
 export default function BlackStars() {
-  const [mounted, setMounted] = useState(false);
   const pointsRef = useRef<THREE.Points>(null!);
   const { scrollYProgress } = useScroll();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-  
   const count = 4000;
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-        pos[i * 3] = (Math.random() - 0.5) * 50;
-        pos[i * 3 + 1] = (Math.random() - 0.5) * 120;
-        pos[i * 3 + 2] = (Math.random() - 0.5) * 15 - 5;
+      pos[i * 3] = (Math.random() - 0.5) * 50;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 120;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 15 - 5;
     }
     return pos;
   }, []);
@@ -30,7 +23,7 @@ export default function BlackStars() {
   const randoms = useMemo(() => {
     const r = new Float32Array(count);
     for (let i = 0; i < count; i++) {
-        r[i] = Math.random();
+      r[i] = Math.random();
     }
     return r;
   }, []);
@@ -43,8 +36,8 @@ export default function BlackStars() {
 
   useFrame((state) => {
     if (pointsRef.current) {
-        uniforms.uTime.value = state.clock.getElapsedTime();
-        uniforms.uScroll.value = scrollYProgress.get();
+      uniforms.uTime.value = state.clock.getElapsedTime();
+      uniforms.uScroll.value = scrollYProgress.get();
     }
   });
 
