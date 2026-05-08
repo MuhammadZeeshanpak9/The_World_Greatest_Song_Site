@@ -5,16 +5,6 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Sphere, MeshDistortMaterial } from "@react-three/drei";
 
-const CHAKRAS = [
-  { name: "Crown", color: "#e6ccff", position: [0, 2.5, 0], size: 0.12 },
-  { name: "Third Eye", color: "#9933ff", position: [0, 2.1, 0], size: 0.1 },
-  { name: "Throat", color: "#33ccff", position: [0, 1.7, 0], size: 0.1 },
-  { name: "Heart", color: "#33ff77", position: [0, 1.2, 0], size: 0.18 },
-  { name: "Solar Plexus", color: "#ffff66", position: [0, 0.7, 0], size: 0.14 },
-  { name: "Sacral", color: "#ff9933", position: [0, 0.2, 0], size: 0.14 },
-  { name: "Root", color: "#ff3333", position: [0, -0.3, 0], size: 0.14 },
-];
-
 const NebulaMaterial = {
   uniforms: {
     uTime: { value: 0 },
@@ -125,15 +115,11 @@ export default function ChakraFigure() {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={particlePositions.length / 3}
-            array={particlePositions}
-            itemSize={3}
+            args={[particlePositions, 3]}
           />
           <bufferAttribute
             attach="attributes-size"
-            count={particleSizes.length}
-            array={particleSizes}
-            itemSize={1}
+            args={[particleSizes, 1]}
           />
         </bufferGeometry>
         <shaderMaterial
@@ -155,47 +141,6 @@ export default function ChakraFigure() {
           speed={1.5}
           blending={THREE.AdditiveBlending}
         />
-      </Sphere>
-
-      {CHAKRAS.map((chakra, i) => (
-        <ChakraPoint key={i} {...chakra} delay={i * 0.5} />
-      ))}
-    </group>
-  );
-}
-
-function ChakraPoint({ color, position, size, delay }: any) {
-  const mesh = useRef<THREE.Mesh>(null);
-  const waveRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    const t = state.clock.getElapsedTime() + delay;
-    if (mesh.current) {
-      const s = 1 + Math.sin(t * 3) * 0.15;
-      mesh.current.scale.setScalar(s);
-    }
-    if (waveRef.current) {
-      const s = (t * 2) % 4;
-      waveRef.current.scale.setScalar(s * 0.5 + 0.5);
-      // @ts-ignore
-      waveRef.current.material.opacity = Math.max(0, 1 - s / 4) * 0.3;
-    }
-  });
-
-  return (
-    <group position={position}>
-      <mesh ref={mesh}>
-        <sphereGeometry args={[size, 32, 32]} />
-        <meshBasicMaterial color={color} transparent opacity={0.9} toneMapped={false} />
-      </mesh>
-      
-      <mesh ref={waveRef} rotation={[Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[size, size + 0.2, 32]} />
-        <meshBasicMaterial color={color} transparent opacity={0.3} toneMapped={false} side={THREE.DoubleSide} />
-      </mesh>
-
-      <Sphere args={[size * 4, 16, 16]}>
-        <meshBasicMaterial color={color} transparent opacity={0.15} toneMapped={false} blending={THREE.AdditiveBlending} />
       </Sphere>
     </group>
   );
